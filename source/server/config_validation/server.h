@@ -63,11 +63,10 @@ public:
   DrainManager& drainManager() override { NOT_IMPLEMENTED; }
   AccessLog::AccessLogManager& accessLogManager() override { return access_log_manager_; }
   void failHealthcheck(bool) override { NOT_IMPLEMENTED; }
-  int getListenSocketFd(const std::string&) override { NOT_IMPLEMENTED; }
-  Network::ListenSocket* getListenSocketByIndex(uint32_t) override { NOT_IMPLEMENTED; }
   void getParentStats(HotRestart::GetParentStatsInfo&) override { NOT_IMPLEMENTED; }
   HotRestart& hotRestart() override { NOT_IMPLEMENTED; }
   Init::Manager& initManager() override { return init_manager_; }
+  ListenerManager& listenerManager() override { return *listener_manager_; }
   Runtime::RandomGenerator& random() override { return random_generator_; }
   RateLimit::ClientPtr
   rateLimitClient(const Optional<std::chrono::milliseconds>& timeout) override {
@@ -101,6 +100,7 @@ private:
   AccessLog::AccessLogManagerImpl access_log_manager_;
   std::unique_ptr<Upstream::ValidationClusterManagerFactory> cluster_manager_factory_;
   InitManagerImpl init_manager_;
+  std::unique_ptr<ListenerManager> listener_manager_;
 };
 
 } // Server

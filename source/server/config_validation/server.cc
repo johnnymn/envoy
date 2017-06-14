@@ -57,10 +57,9 @@ void ValidationInstance::initialize(Options& options, ComponentFactory& componen
       runtime(), stats(), threadLocal(), random(), dnsResolver(), sslContextManager(), dispatcher(),
       localInfo()));
 
-  Configuration::MainImpl* main_config =
-      new Configuration::MainImpl(*this, *cluster_manager_factory_);
+  Configuration::MainImpl* main_config = new Configuration::MainImpl();
   config_.reset(main_config);
-  main_config->initialize(*config_json);
+  main_config->initialize(*config_json, *this, *cluster_manager_factory_);
 
   clusterManager().setInitializedCb([this]()
                                         -> void { init_manager_.initialize([]() -> void {}); });
